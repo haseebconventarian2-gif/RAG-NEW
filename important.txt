@@ -1,0 +1,15 @@
+Here’s a concise recap of the recent RAG + voice config changes you asked about, with exact files.
+
+RAG pipeline changes
+
+RAG retrieval now uses normalized + expanded queries (intent + product + keywords) before searching FAISS, so matching improves on messy STT text. routes.py
+System prompt and RAG context are separated: LLM now receives the voice config prompt as SYSTEM #1 and the retrieved RAG context as SYSTEM #2 (authoritative). azure.py, routes.py
+Fallback behavior added when RAG has no context: instead of “I don’t know,” it returns a safe response or clarification from config. routes.py
+Voice config usage changes
+
+bankislami_voice_config.json is now loaded at runtime and used as the sole system prompt, not indexed. routes.py, azure.py
+“Main” → “Mai” was updated in the voice config (greeting/handoff/silence lines). bankislami_voice_config.json
+The “don’t know” line was corrected (encoding fix). bankislami_voice_config.json
+RAG data handling fix (related)
+
+JSON extractor updated to handle nested bank.json so FAISS doesn’t get an empty chunk list. vector_database.py
