@@ -13,3 +13,54 @@ The “don’t know” line was corrected (encoding fix). bankislami_voice_confi
 RAG data handling fix (related)
 
 JSON extractor updated to handle nested bank.json so FAISS doesn’t get an empty chunk list. vector_database.py
+
+
+
+
+
+
+
+
+
+
+
+You are analyzing a FastAPI WhatsApp + Web UI voice assistant project.
+
+Goal:
+Explain the recent changes to the RAG pipeline and the Bank Islami voice config integration in detail.
+
+Key files:
+- api/routes.py
+- api/azure.py
+- rag_pipeline.py
+- vector_database.py
+- bankislami_voice_config.json
+- bank.json
+
+What to cover:
+1) How bankislami_voice_config.json is used as the system prompt (behavior rules).
+   - Confirm it is NOT indexed or used as RAG knowledge.
+   - Show where it is loaded and injected into the LLM call.
+2) How bank.json is used as the RAG knowledge base.
+   - FAISS index building via vector_database.py.
+   - Retrieval via rag_pipeline.py.
+3) The updated RAG flow in routes.py:
+   - STT transcript normalization (fixes for common errors).
+   - Product name mapping using product_normalization.
+   - Intent detection using intent_keywords.
+   - Expanded retrieval query (intent + product + keywords).
+   - RAG context retrieval.
+   - Fallback behavior if no context.
+4) The updated LLM call:
+   - SYSTEM #1 = voice_config system prompt.
+   - SYSTEM #2 = retrieved RAG context with “primary source of truth” instruction.
+   - USER = original transcript.
+5) Mention fixes:
+   - JSON extractor updated to handle nested bank.json (avoid empty FAISS chunks).
+   - “Main” -> “Mai” in voice config and greetings.
+   - Corrected “don’t know” encoding issue.
+
+Format:
+- Technical, step-by-step.
+- Reference file paths + function names.
+- Focus on recent changes and why they were necessary.
